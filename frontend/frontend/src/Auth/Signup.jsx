@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { LogIn } from "lucide-react";
 import { UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import "./Signup.css";
+import { signUpUser } from "../services/userService";
+import Loader from "../pages/Loader";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const [isLoading, setLoading] = useState(false);
 
   const {
     register,
@@ -20,12 +23,27 @@ const Signup = () => {
   };
 
   const handleSignUp = async (data) => {
+    setLoading(true);
     console.log(`form data - ${JSON.stringify(data, null, 2)}`);
-    reset();
+    try {
+      const response = await signUpUser(data);
+      console.log("User created successfully", response.data);
+      alert("Signup successful!");
+      reset();
+      navigate("/login");
+    } catch (error) {
+      console.error("Signup failed", error);
+      alert(
+        "Signup failed: " + error?.response?.data?.message || "Server error"
+      );
+    } finally {
+      setLoading(false); // hide loader
+    }
   };
 
   return (
     <div>
+      {isLoading && <Loader />}
       <form onSubmit={handleSubmit(handleSignUp)}>
         <div className="hero bg-base-500 min-h-screen">
           <div className="hero-content flex-col lg:flex-row-reverse">
