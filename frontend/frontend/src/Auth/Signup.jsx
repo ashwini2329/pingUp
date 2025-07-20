@@ -19,7 +19,7 @@ const Signup = () => {
   } = useForm();
 
   const navigateToSignIn = () => {
-    navigate("/login"); // Replace with your desired route
+    navigate("/login");
   };
 
   const handleSignUp = async (data) => {
@@ -37,7 +37,7 @@ const Signup = () => {
         "Signup failed: " + error?.response?.data?.message || "Server error"
       );
     } finally {
-      setLoading(false); // hide loader
+      setLoading(false);
     }
   };
 
