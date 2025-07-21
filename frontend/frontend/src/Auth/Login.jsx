@@ -1,16 +1,18 @@
-/* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
 import { LogIn } from "lucide-react";
 import { UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { loginUser } from "../services/userService";
 
 const Login = () => {
+  const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    reset,
+    formState: { errors },
   } = useForm();
 
   const navigateToSignUp = () => {
@@ -18,11 +20,27 @@ const Login = () => {
   };
 
   const handleLogin = async (data) => {
-    console.log(`form data - ${data}`);
+    setLoading(true);
+    try {
+      const response = await loginUser(data);
+      console.log("User logged in successfully", response.data);
+      alert("Login successful!");
+      reset();
+      navigate("/login");
+    } catch (error) {
+      console.error("Signup failed", error);
+      alert(
+        "Login failed: " + error?.response?.data?.message || "Server error"
+      );
+    } finally {
+      setLoading(false);
+    }
+    console.log(`form data - ${JSON.stringify(data, null, 2)}`);
   };
 
   return (
     <div>
+      {isLoading && <Loader />}
       <form onSubmit={handleSubmit(handleLogin)}>
         <div className="hero bg-base-500 min-h-screen">
           <div className="hero-content flex-col lg:flex-row-reverse">
@@ -36,17 +54,55 @@ const Login = () => {
                 </button>
                 <fieldset className="fieldset">
                   <label className="label">Email</label>
-                  <input type="email" className="input" placeholder="Email" />
+                  <input
+                    {...register("email", {
+                      required: { value: true, message: "Email is required" },
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Email format is incorrect",
+                      },
+                    })}
+                    type="email"
+                    className="input"
+                    placeholder="Email"
+                  />
+                  {errors.email && (
+                    <p className="error-msg">{errors.email.message}</p>
+                  )}
+
                   <label className="label">Password</label>
                   <input
+                    {...register("password", {
+                      required: {
+                        value: true,
+                        message: "Password is required",
+                      },
+                      pattern: {
+                        value:
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$/,
+                        message:
+                          "Password should have uppercase, lowercase, special character and digit each",
+                      },
+                      minLength: {
+                        value: 8,
+                        message: "Minimum length required - 8",
+                      },
+                      maxLength: {
+                        value: 30,
+                        message: "Maximum length allowed - 30",
+                      },
+                    })}
                     type="password"
                     className="input"
                     placeholder="Password"
                   />
+                  {errors.password && (
+                    <p className="error-msg">{errors.password.message}</p>
+                  )}
                   <div>
                     <a className="link link-hover">Forgot password?</a>
                   </div>
-                  <button className="btn btn-neutral mt-4">
+                  <button type="submit" className="btn btn-neutral mt-4">
                     Login <LogIn />
                   </button>
                 </fieldset>

@@ -7,6 +7,7 @@ import {
 import Login from "./Auth/Login";
 import NotFound from "./pages/NotFound";
 import Signup from "./Auth/Signup";
+import Home from "./components/Home";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,11 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />,
+    errorElement: <NotFound />,
+  },
+  {
+    path: "/home",
+    element: <Home />,
     errorElement: <NotFound />,
   },
   {
