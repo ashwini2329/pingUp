@@ -4,6 +4,7 @@ import { UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { loginUser } from "../services/userService";
+import Loader from "../pages/Loader";
 
 const Login = () => {
   const [isLoading, setLoading] = useState(false);
@@ -23,12 +24,13 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await loginUser(data);
-      console.log("User logged in successfully", response.data);
+      console.log("User logged in successfully", response);
+      localStorage.setItem("token", response.data.token);
       alert("Login successful!");
       reset();
-      navigate("/login");
+      navigate("/home");
     } catch (error) {
-      console.error("Signup failed", error);
+      console.error("Login failed", error);
       alert(
         "Login failed: " + error?.response?.data?.message || "Server error"
       );

@@ -10,5 +10,10 @@ export const signUpUser = (signupFormData) => {
 
 export const loginUser = (loginFormData) => {
   const loginUrl = apiUrl + "/signin";
+  console.log(
+    `signinurl == ${loginUrl} and loginformdata == ${JSON.stringify(
+      loginFormData
+    )}`
+  );
   return axios.post(loginUrl, loginFormData);
 };
