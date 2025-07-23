@@ -63,7 +63,7 @@ Database (MongoDB via Mongoose)
 
 | Layer      | Technology             |
 |------------|------------------------|
-| Frontend   | React.js, TailwindCSS  |
+| Frontend   | React.js, TailwindCSS, DaisyUI  |
 | Backend    | Node.js, Express       |
 | Real-Time  | Socket.IO              |
 | Database   | MongoDB + Mongoose     |
