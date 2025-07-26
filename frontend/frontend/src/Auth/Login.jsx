@@ -26,6 +26,7 @@ const Login = () => {
       const response = await loginUser(data);
       console.log("User logged in successfully", response);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("profileId", response.data.user.id);
       alert("Login successful!");
       reset();
       navigate("/home");
