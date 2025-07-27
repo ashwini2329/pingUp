@@ -20,13 +20,8 @@ const Profile = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   if (userData) {
-  //   }
-  // }, [userData]);
-
-  const editProfile = (path) => {
-    navigate(path);
+  const editProfile = (path, userData) => {
+    navigate(path, { state: { userData } });
   };
 
   // Dummy user data (replace with actual state or props)
@@ -97,7 +92,8 @@ const Profile = () => {
               className="btn btn-primary"
               onClick={() =>
                 editProfile(
-                  `/home/edit-profile/${localStorage.getItem("profileId")}`
+                  `/home/edit-profile/${localStorage.getItem("profileId")}`,
+                  userData
                 )
               }
             >

@@ -1,10 +1,14 @@
-import { React, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { React, useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { X } from "lucide-react"; // or use any icon
+import Loader from "../pages/Loader";
 const EditProfile = () => {
   const navigate = useNavigate();
   const [hobbies, setHobbies] = useState([]);
   const [hobbyInput, setHobbyInput] = useState("");
+  const { state } = useLocation();
+  // eslint-disable-next-line no-unused-vars
+  const [userData, setUserData] = useState(state?.userData || null);
 
   const addHobby = () => {
     const trimmed = hobbyInput.trim();
@@ -13,6 +17,18 @@ const EditProfile = () => {
       setHobbyInput("");
     }
   };
+
+  useEffect(() => {
+    if (!userData) {
+      // Optional: Fallback fetch if needed
+      // fetchUserDetails(id).then(res => setUserData(res.data));
+    }
+    console.log(`userData - ${JSON.stringify(userData)}`);
+  }, [userData]);
+
+  if (!userData) {
+    return <Loader />;
+  }
 
   const removeHobby = (hobbyToRemove) => {
     setHobbies(hobbies.filter((hobby) => hobby !== hobbyToRemove));
@@ -44,11 +60,13 @@ const EditProfile = () => {
               type="text"
               placeholder="Name"
               className="input input-bordered w-full"
+              value={userData.name}
             />
             <input
               type="email"
               placeholder="Email"
               className="input input-bordered w-full"
+              value={userData.email}
             />
             <textarea
               placeholder="About"
@@ -58,6 +76,7 @@ const EditProfile = () => {
               type="tel"
               placeholder="Phone Number"
               className="input input-bordered w-full"
+              value={userData.phone}
             />
             <input
               name="linkedin"
