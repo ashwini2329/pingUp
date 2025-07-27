@@ -24,11 +24,9 @@ const Signup = () => {
 
   const handleSignUp = async (data) => {
     setLoading(true);
-    console.log(`form data - ${JSON.stringify(data, null, 2)}`);
     try {
       const response = await signUpUser(data);
-      console.log("User created successfully", response.data);
-      alert("Signup successful!");
+      alert(`Signup successful! - ${response}`);
       reset();
       navigate("/login");
     } catch (error) {
