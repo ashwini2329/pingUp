@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    hobbies: {
+      type: [String],
+      default: [],
+    },
     socials: {
       github: { type: String, default: "" },
       linkedin: { type: String, default: "" },
