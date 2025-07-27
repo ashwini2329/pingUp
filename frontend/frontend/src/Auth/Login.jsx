@@ -24,8 +24,8 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await loginUser(data);
-      console.log("User logged in successfully", response);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("profileId", response.data.user.id);
       alert("Login successful!");
       reset();
       navigate("/home");
@@ -37,7 +37,6 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
-    console.log(`form data - ${JSON.stringify(data, null, 2)}`);
   };
 
   return (
