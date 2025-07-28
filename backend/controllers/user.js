@@ -123,8 +123,39 @@ const handleUserSignIn = async (req, res) => {
   }
 };
 
+const handleUpdateUser = async (req, res) => {
+  const updatedData = req.body;
+
+  // Check if updateData has at least one key
+  if (!updateData || Object.keys(updateData).length === 0) {
+    return res
+      .status(400)
+      .json({ error: "At least one field must be provided for update." });
+  }
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: updatedData },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found !" });
+    }
+
+    return res.status(200).json({
+      message: updatedUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   handleUserSignUp,
   handleUserSignIn,
   fetchUserDeails,
+  handleUpdateUser,
 };
