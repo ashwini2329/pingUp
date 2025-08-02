@@ -24,6 +24,7 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await loginUser(data);
+      console.log(`response on login --- ${JSON.stringify(response)}`);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("profileId", response.data.user.id);
       alert("Login successful!");

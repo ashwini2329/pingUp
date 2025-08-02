@@ -124,15 +124,40 @@ const handleUserSignIn = async (req, res) => {
 };
 
 const handleUpdateUser = async (req, res) => {
-  const updatedData = req.body;
+  console.log(`handleUpdateUser hit`);
 
-  // Check if updateData has at least one key
-  if (!updateData || Object.keys(updateData).length === 0) {
-    return res
-      .status(400)
-      .json({ error: "At least one field must be provided for update." });
-  }
   try {
+    const { name, email, phone, about, hobbies } = req.body;
+
+    // Parse socials properly
+    const socials = {
+      github: req.body.github || "",
+      linkedin: req.body.linkedin || "",
+      twitter: req.body.twitter || "",
+      portfolio: req.body.portfolio || "",
+    };
+
+    // Parse hobbies safely (might come as string if sent as FormData)
+    const parsedHobbies =
+      typeof hobbies === "string"
+        ? [hobbies]
+        : Array.isArray(hobbies)
+        ? hobbies
+        : [];
+
+    const updatedData = {
+      name,
+      email,
+      phone,
+      about,
+      socials,
+      hobbies: parsedHobbies,
+    };
+
+    if (req.file) {
+      updatedData.profilePhoto = req.file.filename;
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
       { $set: updatedData },
@@ -140,16 +165,13 @@ const handleUpdateUser = async (req, res) => {
     );
 
     if (!updatedUser) {
-      return res.status(404).json({ error: "User not found !" });
+      return res.status(404).json({ error: "User not found!" });
     }
 
-    return res.status(200).json({
-      message: updatedUser,
-    });
+    res.status(200).json({ message: updatedUser });
   } catch (error) {
-    res.status(500).json({
-      error: error.message,
-    });
+    console.error("Update Error:", error);
+    res.status(500).json({ error: error.message });
   }
 };
 

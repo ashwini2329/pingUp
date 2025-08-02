@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const upload = require("../middlewares/upload");
 
 const {
   handleUserSignIn,
@@ -14,6 +15,6 @@ router.post("/signup", handleUserSignUp);
 
 router.post("/signin", handleUserSignIn);
 
-router.put("/:id", handleUpdateUser);
+router.put("/:id", upload.single("profileImage"), handleUpdateUser);
 
 module.exports = router;

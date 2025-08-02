@@ -27,3 +27,18 @@ export const getUserDetails = () => {
   const userDetailURL = apiUrl + `/${localStorage.getItem("profileId")}`;
   return axios.get(userDetailURL);
 };
+
+/**
+ *
+ * @param {*} updateDetailsData
+ * @returns
+ */
+export const updateUser = (updateDetailsData) => {
+  console.log("update user service hit");
+  const userUpdateUrl = apiUrl + `/${localStorage.getItem("profileId")}`;
+  return axios.put(userUpdateUrl, updateDetailsData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};

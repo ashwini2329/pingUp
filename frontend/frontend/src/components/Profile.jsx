@@ -11,6 +11,7 @@ const Profile = () => {
     const fetchUserData = async () => {
       try {
         const userDetails = await getUserDetails();
+        console.log(`userDetails -- ${JSON.stringify(userDetails)}`);
         setUserData(userDetails.data.message);
       } catch (error) {
         console.error(`error while fetching user details - ${error}`);
@@ -26,13 +27,8 @@ const Profile = () => {
 
   // Dummy user data (replace with actual state or props)
   const user = {
-    about: "MEAN Stack Developer | Poet | Bike Lover",
     profileImage:
       "https://png.pngtree.com/png-clipart/20230927/original/pngtree-man-avatar-image-for-profile-png-image_13001884.png",
-    social: {
-      github: "https://github.com/ashwini2329",
-      linkedin: "https://linkedin.com/in/ashwini2329",
-    },
   };
 
   if (!userData) {
@@ -44,7 +40,14 @@ const Profile = () => {
       {/* Circular Profile Image */}
       <div className="avatar mb-4">
         <div className="w-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-          <img src={user.profileImage} alt="Profile" />
+          <img
+            src={
+              userData.profilePhoto
+                ? `http://localhost:5000/uploads/${userData.profilePhoto}`
+                : `${user.profileImage}`
+            }
+            alt="Profile"
+          />
         </div>
       </div>
 
@@ -54,7 +57,7 @@ const Profile = () => {
           <h2 className="card-title text-center text-2xl font-semibold">
             {userData.name}
           </h2>
-          <p className="text-sm text-gray-500 mb-2">{user.about}</p>
+          <p className="text-sm text-gray-500 mb-2">{userData.about}</p>
 
           <div className="mt-2 space-y-1 text-sm">
             <p>
@@ -67,22 +70,44 @@ const Profile = () => {
               <strong>GitHub:</strong>{" "}
               <a
                 className="link text-blue-600"
-                href={user.social.github}
+                href={userData.socials.github}
                 target="_blank"
                 rel="noreferrer"
               >
-                {user.social.github}
+                {userData.socials.github}
               </a>
             </p>
             <p>
               <strong>LinkedIn:</strong>{" "}
               <a
                 className="link text-blue-600"
-                href={user.social.linkedin}
+                href={userData.socials.linkedin}
                 target="_blank"
                 rel="noreferrer"
               >
-                {user.social.linkedin}
+                {userData.socials.linkedin}
+              </a>
+            </p>
+            <p>
+              <strong>Twitter:</strong>{" "}
+              <a
+                className="link text-blue-600"
+                href={userData.socials.twitter}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {userData.socials.twitter}
+              </a>
+            </p>
+            <p>
+              <strong>Portfolio:</strong>{" "}
+              <a
+                className="link text-blue-600"
+                href={userData.socials.portfolio}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {userData.socials.portfolio}
               </a>
             </p>
           </div>
