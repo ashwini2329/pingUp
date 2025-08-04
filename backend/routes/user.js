@@ -7,9 +7,12 @@ const {
   handleUserSignUp,
   fetchUserDeails,
   handleUpdateUser,
+  fetchAllUsers,
 } = require("../controllers/user");
 
 router.get("/:id", fetchUserDeails);
+
+router.get("/allUsers/:id", fetchAllUsers);
 
 router.post("/signup", handleUserSignUp);
 

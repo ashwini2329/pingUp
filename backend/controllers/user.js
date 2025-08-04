@@ -36,6 +36,33 @@ const fetchUserDeails = async (req, res) => {
 };
 
 /**
+ * return list of all registered users except logged in user
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+const fetchAllUsers = async (req, res) => {
+  console.log(`fetchAllUsers got hit !`);
+  try {
+    const allUsers = await User.find({ _id: { $ne: req.params.id } }).select(
+      "-password"
+    );
+
+    if (!allUsers) {
+      return res.status(404).json({
+        message: "User details not found !",
+      });
+    }
+    return res.status(200).json({
+      message: allUsers,
+    });
+  } catch (error) {
+    console.error("Signup error:", error);
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
+};
+
+/**
  * user sign up function
  * @param {*} req
  * @param {*} res
@@ -180,4 +207,5 @@ module.exports = {
   handleUserSignIn,
   fetchUserDeails,
   handleUpdateUser,
+  fetchAllUsers,
 };
