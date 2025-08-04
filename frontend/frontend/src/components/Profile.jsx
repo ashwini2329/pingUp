@@ -100,7 +100,7 @@ const Profile = () => {
               </a>
             </p>
             <p>
-              <strong>Portfolio:</strong>{" "}
+              <strong>Portfolio :</strong>{" "}
               <a
                 className="link text-blue-600"
                 href={userData.socials.portfolio}

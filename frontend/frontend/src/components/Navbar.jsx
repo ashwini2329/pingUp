@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getUserDetails } from "../services/userService";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [profilePhoto, setProfilePhoto] = useState(null);
 
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
   const closeDropdown = () => setIsDropdownOpen(false);
@@ -18,6 +20,27 @@ const Navbar = () => {
     navigate("/login");
     closeDropdown();
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userDetails = await getUserDetails();
+        console.log(`userDetailsNavbar -- ${JSON.stringify(userDetails)}`);
+        setProfilePhoto(userDetails.data.message.profilePhoto);
+        console.log(`profilephoto -- ${profilePhoto}`);
+      } catch (error) {
+        console.error(`error while fetching user details - ${error}`);
+      }
+    };
+    fetchUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (profilePhoto) {
+      console.log("Updated profilePhoto:", profilePhoto);
+    }
+  }, [profilePhoto]);
 
   return (
     <div>
@@ -46,7 +69,11 @@ const Navbar = () => {
               <div className="w-10 rounded-full">
                 <img
                   alt="Avatar"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  src={
+                    profilePhoto
+                      ? `http://localhost:5000/uploads/${profilePhoto}`
+                      : "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  }
                 />
               </div>
             </button>

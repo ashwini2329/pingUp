@@ -129,7 +129,7 @@ const EditProfile = () => {
               type="text"
               placeholder="Name"
               className="input input-bordered w-full"
-              value={userData.name}
+              defaultValue={userData.name}
               {...register("name", {
                 required: { value: true, message: "Name is required" },
                 pattern: {
@@ -148,7 +148,7 @@ const EditProfile = () => {
               type="email"
               placeholder="Email"
               className="input input-bordered w-full"
-              value={userData.email}
+              defaultValue={userData.email}
               {...register("email", {
                 required: { value: true, message: "Email is required !" },
                 pattern: {
@@ -164,7 +164,7 @@ const EditProfile = () => {
             <textarea
               placeholder="About"
               className="textarea textarea-bordered w-full"
-              value={userData.about}
+              defaultValue={userData.about}
               {...register("about", {
                 required: { value: true, message: "About is required !" },
                 minLength: {
@@ -185,7 +185,7 @@ const EditProfile = () => {
               type="tel"
               placeholder="Phone Number"
               className="input input-bordered w-full"
-              value={userData.phone}
+              defaultValue={userData.phone}
               {...register("phone", {
                 required: { value: true, message: "Phone is required !" },
                 length: {
@@ -202,7 +202,7 @@ const EditProfile = () => {
               type="url"
               placeholder="LinkedIn URL"
               className="input input-bordered w-full"
-              value={userData.socials.linkedin}
+              defaultValue={userData.socials.linkedin}
               {...register("linkedin", {
                 required: { value: true, message: "LinkedIn URL is required" },
                 pattern: {
@@ -218,7 +218,7 @@ const EditProfile = () => {
             <input
               type="url"
               placeholder="GitHub URL"
-              value={userData.socials.github}
+              defaultValue={userData.socials.github}
               className="input input-bordered w-full"
               {...register("github", {
                 required: { value: true, message: "GitHub URL is required" },
@@ -235,7 +235,7 @@ const EditProfile = () => {
             <input
               type="url"
               placeholder="Twitter URL"
-              value={userData.socials.twitter}
+              defaultValue={userData.socials.twitter}
               className="input input-bordered w-full"
               {...register("twitter", {
                 required: { value: true, message: "Twitter URL is required" },
@@ -253,7 +253,7 @@ const EditProfile = () => {
               type="url"
               placeholder="Portfolio URL"
               className="input input-bordered w-full"
-              value={userData.socials.portfolio}
+              defaultValue={userData.socials.portfolio}
               {...register("portfolio", {
                 required: { value: true, message: "Portfolio URL is required" },
                 pattern: {
