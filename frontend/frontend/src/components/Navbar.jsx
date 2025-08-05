@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllUserDetails, getUserDetails } from "../services/userService";
 import { UserRoundPlus } from "lucide-react";
+import UserProfileModal from "../components/UserProfileModal";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -100,6 +101,12 @@ const Navbar = () => {
 
   return (
     <div>
+      {showModal && (
+        <UserProfileModal
+          user={selectedUser}
+          onClose={() => setShowModal(false)}
+        />
+      )}
       <div className="navbar bg-base-100 shadow-sm">
         <div className="flex-1">
           <a
