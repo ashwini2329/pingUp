@@ -1,11 +1,19 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserDetails } from "../services/userService";
+import { getAllUserDetails, getUserDetails } from "../services/userService";
+import { UserRoundPlus } from "lucide-react";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState(null);
+  const [allUsers, setAllUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const searchWrapperRef = useRef(null);
 
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
   const closeDropdown = () => setIsDropdownOpen(false);
@@ -13,6 +21,43 @@ const Navbar = () => {
   const handleNavigate = (path) => {
     navigate(path);
     closeDropdown();
+  };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const allUsersList = await getAllUserDetails();
+      console.log(
+        `allUsersList -- ${JSON.stringify(allUsersList.data.message)}`
+      );
+      setAllUsers(allUsersList.data.message);
+    };
+    fetchUsers();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchWrapperRef.current &&
+        !searchWrapperRef.current.contains(event.target)
+      ) {
+        setFilteredUsers([]); // This hides the card
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+
+    const filtered = allUsers.filter((user) =>
+      user.name.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredUsers(filtered);
   };
 
   const handleLogout = () => {
@@ -25,9 +70,7 @@ const Navbar = () => {
     const fetchUserData = async () => {
       try {
         const userDetails = await getUserDetails();
-        console.log(`userDetailsNavbar -- ${JSON.stringify(userDetails)}`);
         setProfilePhoto(userDetails.data.message.profilePhoto);
-        console.log(`profilephoto -- ${profilePhoto}`);
       } catch (error) {
         console.error(`error while fetching user details - ${error}`);
       }
@@ -36,11 +79,14 @@ const Navbar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (profilePhoto) {
-      console.log("Updated profilePhoto:", profilePhoto);
-    }
-  }, [profilePhoto]);
+  useEffect(() => {}, [profilePhoto]);
+
+  const openProfileModal = (user) => {
+    setSelectedUser(user);
+    setShowModal(true);
+  };
+
+  const sendFriendRequest = () => {};
 
   return (
     <div>
@@ -53,12 +99,50 @@ const Navbar = () => {
             PingUp
           </a>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2" ref={searchWrapperRef}>
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Search User"
             className="input input-bordered w-24 md:w-auto"
+            value={searchTerm}
+            onChange={handleSearch}
           />
+          {filteredUsers.length > 0 && (
+            <div className="absolute top-16 right-4 bg-base-200 border border-base-300 shadow-lg rounded-lg px-3 py-2 w-full max-w-xs z-50 max-h-96 overflow-y-auto">
+              {filteredUsers.map((user) => (
+                <div
+                  key={user._id}
+                  className="flex items-center justify-between gap-2 p-2 rounded-md hover:bg-base-300 transition"
+                >
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <img
+                      src={`http://localhost:5000/uploads/${user.profilePhoto}`}
+                      alt="dp"
+                      className="w-8 h-8 rounded-full object-cover border border-base-300"
+                    />
+                    <span className="truncate font-medium text-sm text-base-content">
+                      {user.name}
+                    </span>
+                  </div>
+
+                  <div className="flex gap-1 items-center shrink-0">
+                    <button
+                      className="btn btn-xs btn-outline px-2 min-w-fit"
+                      onClick={() => openProfileModal(user)}
+                    >
+                      View Profile
+                    </button>
+                    <button
+                      className="btn btn-xs btn-primary px-2 min-w-fit"
+                      onClick={() => sendFriendRequest(user._id)}
+                    >
+                      <UserRoundPlus />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Dropdown */}
           <div className="relative">

@@ -31,7 +31,7 @@ export const getUserDetails = () => {
 /**
  *
  * @param {*} updateDetailsData
- * @returns
+ * @returns updated user details
  */
 export const updateUser = (updateDetailsData) => {
   console.log("update user service hit");
@@ -41,4 +41,14 @@ export const updateUser = (updateDetailsData) => {
       "Content-Type": "multipart/form-data",
     },
   });
+};
+
+/**
+ *
+ * @returns All User Details List
+ */
+export const getAllUserDetails = () => {
+  const getAllUserDetailsURL =
+    apiUrl + `/allUsers/${localStorage.getItem("profileId")}`;
+  return axios.get(getAllUserDetailsURL);
 };
