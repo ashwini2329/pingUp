@@ -54,11 +54,15 @@ const Profile = () => {
       {/* Card with Details */}
       <div className="card w-full md:w-1/2 bg-base-100 shadow-xl">
         <div className="card-body">
+          <span>
+            {userData.isPrivate === false ? "Public" : "Private"}
+            {"   "}
+            <input type="checkbox" className="toggle" disabled defaultChecked />
+          </span>
           <h2 className="card-title text-center text-2xl font-semibold">
             {userData.name}
           </h2>
           <p className="text-sm text-gray-500 mb-2">{userData.about}</p>
-
           <div className="mt-2 space-y-1 text-sm">
             <p>
               <strong>Email:</strong> {userData.email}
@@ -111,7 +115,6 @@ const Profile = () => {
               </a>
             </p>
           </div>
-
           <div className="card-actions justify-end mt-4">
             <button
               className="btn btn-primary"

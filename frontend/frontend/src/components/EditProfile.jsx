@@ -18,6 +18,7 @@ const EditProfile = () => {
   const [isLoading, setLoading] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [userData, setUserData] = useState(state?.userData || null);
+  const [isPrivate, setIsPrivate] = useState(userData?.isPrivate || false);
 
   const {
     register,
@@ -79,6 +80,7 @@ const EditProfile = () => {
       formData.append("github", data.github);
       formData.append("twitter", data.twitter);
       formData.append("portfolio", data.portfolio);
+      formData.append("isPrivate", isPrivate);
 
       console.log("data.profileImage", data.profileImage);
       if (selectedFile) {
@@ -125,6 +127,21 @@ const EditProfile = () => {
           <h2 className="text-2xl font-semibold mb-4">Edit Profile</h2>
           <form onSubmit={handleSubmit(handleUpdateUser)} className="space-y-4">
             {/* Input fields */}
+            <fieldset className="fieldset bg-base-100 border-base-300 rounded-box w-64 border p-4">
+              <legend className="fieldset-legend">Account Privacy</legend>
+              <label className="label cursor-pointer flex gap-2 items-center">
+                <input
+                  type="checkbox"
+                  className="toggle"
+                  checked={isPrivate}
+                  onChange={() => setIsPrivate((prev) => !prev)}
+                />
+                {userData.isPrivate == false
+                  ? "Switch to Private"
+                  : "Switch to Public"}
+              </label>
+            </fieldset>
+
             <input
               type="text"
               placeholder="Name"

@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    isPrivate: {
+      type: Boolean,
+      default: false,
+    },
     socials: {
       github: { type: String, default: "" },
       linkedin: { type: String, default: "" },

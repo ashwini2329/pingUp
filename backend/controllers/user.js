@@ -154,7 +154,7 @@ const handleUpdateUser = async (req, res) => {
   console.log(`handleUpdateUser hit`);
 
   try {
-    const { name, email, phone, about, hobbies } = req.body;
+    const { name, email, phone, about, hobbies, isPrivate } = req.body;
 
     // Parse socials properly
     const socials = {
@@ -177,6 +177,7 @@ const handleUpdateUser = async (req, res) => {
       email,
       phone,
       about,
+      isPrivate,
       socials,
       hobbies: parsedHobbies,
     };
