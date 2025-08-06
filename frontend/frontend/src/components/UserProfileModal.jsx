@@ -1,5 +1,6 @@
 import React from "react";
 import { UserRoundPlus } from "lucide-react";
+import { EarthLock } from "lucide-react";
 
 const UserProfileModal = ({ user, onClose }) => {
   const sendFriendRequest = async (receiverId) => {
@@ -55,49 +56,53 @@ const UserProfileModal = ({ user, onClose }) => {
           </p>
         </div>
 
-        {/* Phone */}
-        <div className="mt-5">
-          <h3 className="text-md font-semibold mb-1">Phone</h3>
-          <p className="text-sm text-base-content">{user.phone || "N/A"}</p>
-        </div>
+        {!user.isPrivate && (
+          <>
+            {/* Phone */}
+            <div className="mt-5">
+              <h3 className="text-md font-semibold mb-1">Phone</h3>
+              <p className="text-sm text-base-content">{user.phone || "N/A"}</p>
+            </div>
 
-        <div className="flex flex-col items-center justify-center w-full gap-5">
-          {/* Socials - Horizontal layout */}
-          {user.socials && Object.keys(user.socials).length > 0 && (
-            <div className="mt-4">
-              <h3 className="text-md font-semibold mb-2">Socials</h3>
-              <div className="flex flex-wrap gap-3">
-                {Object.entries(user.socials).map(([platform, link]) => (
-                  <a
-                    key={platform}
-                    href={link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-primary hover:underline bg-base-300 px-3 py-1 rounded-full"
-                  >
-                    {platform.charAt(0).toUpperCase() + platform.slice(1)}
-                  </a>
-                ))}
-              </div>
+            <div className="flex flex-col items-center justify-center w-full gap-5">
+              {/* Socials - Horizontal layout */}
+              {user.socials && Object.keys(user.socials).length > 0 && (
+                <div className="mt-4">
+                  <h3 className="text-md font-semibold mb-2">Socials</h3>
+                  <div className="flex flex-wrap gap-3">
+                    {Object.entries(user.socials).map(([platform, link]) => (
+                      <a
+                        key={platform}
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-primary hover:underline bg-base-300 px-3 py-1 rounded-full"
+                      >
+                        {platform.charAt(0).toUpperCase() + platform.slice(1)}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {/* Hobbies - Horizontal layout */}
+              {user.hobbies && user.hobbies.length > 0 && (
+                <div className="mt-4">
+                  <h3 className="text-md font-semibold mb-2">Hobbies</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {user.hobbies.map((hobby, index) => (
+                      <span
+                        key={index}
+                        className="bg-base-300 px-3 py-1 rounded-full text-xs text-base-content"
+                      >
+                        {hobby}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-          {/* Hobbies - Horizontal layout */}
-          {user.hobbies && user.hobbies.length > 0 && (
-            <div className="mt-4">
-              <h3 className="text-md font-semibold mb-2">Hobbies</h3>
-              <div className="flex flex-wrap gap-2">
-                {user.hobbies.map((hobby, index) => (
-                  <span
-                    key={index}
-                    className="bg-base-300 px-3 py-1 rounded-full text-xs text-base-content"
-                  >
-                    {hobby}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+          </>
+        )}
 
         {/* Send Friend Request Button */}
         <div className="mt-6 flex justify-center">
@@ -107,6 +112,15 @@ const UserProfileModal = ({ user, onClose }) => {
           >
             Add Friend <UserRoundPlus size={16} />
           </button>
+        </div>
+        <div className="mt-6 flex justify-center">
+          {user.isPrivate && (
+            <p className="mt-3 text-center text-xs italic text-base-content/60 tracking-wide shadow-inner">
+              <span className="inline-flex items-center gap-1">
+                This account is private <EarthLock />
+              </span>
+            </p>
+          )}
         </div>
       </div>
     </div>

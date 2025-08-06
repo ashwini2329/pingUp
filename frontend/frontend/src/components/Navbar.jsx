@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getAllUserDetails, getUserDetails } from "../services/userService";
 import { UserRoundPlus } from "lucide-react";
 import UserProfileModal from "../components/UserProfileModal";
+import { GlobeLock } from "lucide-react";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -140,6 +141,9 @@ const Navbar = () => {
                       />
                       <span className="truncate font-medium text-sm text-base-content">
                         {user.name}
+                      </span>
+                      <span>
+                        {user.isPrivate === true ? <GlobeLock /> : ""}
                       </span>
                     </div>
 
