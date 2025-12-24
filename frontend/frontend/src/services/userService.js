@@ -31,7 +31,7 @@ export const updatePassword = (newPassword) => {
       newPassword
     )} and formed url is ${updatePasswordUrl}`
   );
-  // return axios.post(updatePasswordUrl, newPassword);
+  return axios.post(updatePasswordUrl, newPassword);
 };
 
 /**
