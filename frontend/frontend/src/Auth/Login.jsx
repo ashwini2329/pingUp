@@ -20,6 +20,10 @@ const Login = () => {
     navigate("/signup"); // Replace with your desired route
   };
 
+  const navigateToUpdatePassword = () => {
+    navigate("/updatePassword"); // navigate to update password page
+  };
+
   const handleLogin = async (data) => {
     setLoading(true);
     try {
@@ -102,7 +106,12 @@ const Login = () => {
                     <p className="error-msg">{errors.password.message}</p>
                   )}
                   <div>
-                    <a className="link link-hover">Forgot password?</a>
+                    <a
+                      onClick={navigateToUpdatePassword}
+                      className="link link-hover"
+                    >
+                      Forgot password?
+                    </a>
                   </div>
                   <button type="submit" className="btn btn-neutral mt-4">
                     Login <LogIn />

@@ -21,6 +21,20 @@ export const loginUser = (loginFormData) => {
 };
 
 /**
+ * @param {*} newPassword
+ * @returns updated Password response
+ */
+export const updatePassword = (newPassword) => {
+  const updatePasswordUrl = apiUrl + "/updatePassword";
+  console.log(
+    `newPassword data - ${JSON.stringify(
+      newPassword
+    )} and formed url is ${updatePasswordUrl}`
+  );
+  // return axios.post(updatePasswordUrl, newPassword);
+};
+
+/**
  * @returns profile details
  */
 export const getUserDetails = () => {
