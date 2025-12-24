@@ -8,16 +8,17 @@ const {
   fetchUserDeails,
   handleUpdateUser,
   fetchAllUsers,
+  handleUpdatePassword,
 } = require("../controllers/user");
 
-router.get("/:id", fetchUserDeails);
-
-router.get("/allUsers/:id", fetchAllUsers);
-
+// Static Routes
 router.post("/signup", handleUserSignUp);
-
 router.post("/signin", handleUserSignIn);
+router.post("/updatePassword", handleUpdatePassword);
 
+// Parameterized Routes
+router.get("/:id", fetchUserDeails);
+router.get("/allUsers/:id", fetchAllUsers);
 router.put("/:id", upload.single("profileImage"), handleUpdateUser);
 
 module.exports = router;

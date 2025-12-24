@@ -47,6 +47,23 @@ const UpdatePassword = () => {
             <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
               <div className="card-body">
                 <fieldset className="fieldset">
+                  <label className="label">Email</label>
+                  <input
+                    {...register("email", {
+                      required: { value: true, message: "Email is required" },
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Email format is incorrect",
+                      },
+                    })}
+                    type="email"
+                    className="input"
+                    placeholder="Email"
+                  />
+                  {errors.email && (
+                    <p className="error-msg">{errors.email.message}</p>
+                  )}
+
                   <label className="label">Password</label>
                   <input
                     {...register("password", {
