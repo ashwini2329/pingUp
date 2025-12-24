@@ -38,12 +38,34 @@ const userSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    isPrivate: {
+      type: Boolean,
+      default: false,
+    },
     socials: {
       github: { type: String, default: "" },
       linkedin: { type: String, default: "" },
       twitter: { type: String, default: "" },
       portfolio: { type: String, default: "" },
     },
+    friends: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    friendRequests: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User", // users who sent requests
+      },
+    ],
+    sentRequests: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User", // users you sent requests to
+      },
+    ],
   },
   {
     timestamps: true,

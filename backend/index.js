@@ -1,8 +1,8 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const userRoute = require("./routes/user");
 const cors = require("cors");
+const path = require("path");
 
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -11,9 +11,13 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+const userRoute = require("./routes/user");
+const friendRoute = require("./routes/friendRoutes");
+
 // routes
 app.use("/user", userRoute);
-
+app.use("/user/requests", friendRoute);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // connnect to mongodb
 mongoose
   .connect(process.env.MONGO_URI)

@@ -14,6 +14,7 @@ import Content from "./components/Content";
 import Profile from "./components/Profile";
 import Settings from "./components/Settings";
 import EditProfile from "./components/EditProfile";
+import UpdatePassword from "./Auth/UpdatePassword";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,11 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />,
+    errorElement: <NotFound />,
+  },
+  {
+    path: "/updatePassword",
+    element: <UpdatePassword />,
     errorElement: <NotFound />,
   },
   {

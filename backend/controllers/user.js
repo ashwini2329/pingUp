@@ -36,6 +36,33 @@ const fetchUserDeails = async (req, res) => {
 };
 
 /**
+ * return list of all registered users except logged in user
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+const fetchAllUsers = async (req, res) => {
+  console.log(`fetchAllUsers got hit !`);
+  try {
+    const allUsers = await User.find({ _id: { $ne: req.params.id } }).select(
+      "-password"
+    );
+
+    if (!allUsers) {
+      return res.status(404).json({
+        message: "User details not found !",
+      });
+    }
+    return res.status(200).json({
+      message: allUsers,
+    });
+  } catch (error) {
+    console.error("Error while fetching user details:", error);
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
+};
+
+/**
  * user sign up function
  * @param {*} req
  * @param {*} res
@@ -123,8 +150,63 @@ const handleUserSignIn = async (req, res) => {
   }
 };
 
+const handleUpdateUser = async (req, res) => {
+  console.log(`handleUpdateUser hit`);
+
+  try {
+    const { name, email, phone, about, hobbies, isPrivate } = req.body;
+
+    // Parse socials properly
+    const socials = {
+      github: req.body.github || "",
+      linkedin: req.body.linkedin || "",
+      twitter: req.body.twitter || "",
+      portfolio: req.body.portfolio || "",
+    };
+
+    // Parse hobbies safely (might come as string if sent as FormData)
+    const parsedHobbies =
+      typeof hobbies === "string"
+        ? [hobbies]
+        : Array.isArray(hobbies)
+        ? hobbies
+        : [];
+
+    const updatedData = {
+      name,
+      email,
+      phone,
+      about,
+      isPrivate,
+      socials,
+      hobbies: parsedHobbies,
+    };
+
+    if (req.file) {
+      updatedData.profilePhoto = req.file.filename;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: updatedData },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+
+    res.status(200).json({ message: updatedUser });
+  } catch (error) {
+    console.error("Update Error:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   handleUserSignUp,
   handleUserSignIn,
   fetchUserDeails,
+  handleUpdateUser,
+  fetchAllUsers,
 };
