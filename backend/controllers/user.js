@@ -57,7 +57,7 @@ const fetchAllUsers = async (req, res) => {
       message: allUsers,
     });
   } catch (error) {
-    console.error("Signup error:", error);
+    console.error("Error while fetching user details:", error);
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
