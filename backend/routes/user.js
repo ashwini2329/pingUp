@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const upload = require("../middlewares/upload");
+const protect = require("../middlewares/authMiddleware");
 
 const {
   handleUserSignIn,
@@ -11,12 +12,13 @@ const {
   handleUpdatePassword,
 } = require("../controllers/user");
 
-// Static Routes
+// Public Routes
 router.post("/signup", handleUserSignUp);
 router.post("/signin", handleUserSignIn);
 router.post("/updatePassword", handleUpdatePassword);
 
-// Parameterized Routes
+// Protected Routes
+router.use(protect);
 router.get("/:id", fetchUserDeails);
 router.get("/allUsers/:id", fetchAllUsers);
 router.put("/:id", upload.single("profileImage"), handleUpdateUser);
