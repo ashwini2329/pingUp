@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "./verifyJWT";
 
 const apiUrl = import.meta.env.VITE_API_URL + "/user";
 
@@ -8,7 +8,7 @@ const apiUrl = import.meta.env.VITE_API_URL + "/user";
  */
 export const signUpUser = (signupFormData) => {
   const signupUrl = apiUrl + "/signup";
-  return axios.post(signupUrl, signupFormData);
+  return api.post(signupUrl, signupFormData);
 };
 
 /**
@@ -17,7 +17,7 @@ export const signUpUser = (signupFormData) => {
  */
 export const loginUser = (loginFormData) => {
   const loginUrl = apiUrl + "/signin";
-  return axios.post(loginUrl, loginFormData);
+  return api.post(loginUrl, loginFormData);
 };
 
 /**
@@ -31,7 +31,7 @@ export const updatePassword = (newPassword) => {
       newPassword
     )} and formed url is ${updatePasswordUrl}`
   );
-  return axios.post(updatePasswordUrl, newPassword);
+  return api.post(updatePasswordUrl, newPassword);
 };
 
 /**
@@ -39,7 +39,7 @@ export const updatePassword = (newPassword) => {
  */
 export const getUserDetails = () => {
   const userDetailURL = apiUrl + `/${localStorage.getItem("profileId")}`;
-  return axios.get(userDetailURL);
+  return api.get(userDetailURL);
 };
 
 /**
@@ -50,7 +50,7 @@ export const getUserDetails = () => {
 export const updateUser = (updateDetailsData) => {
   console.log("update user service hit");
   const userUpdateUrl = apiUrl + `/${localStorage.getItem("profileId")}`;
-  return axios.put(userUpdateUrl, updateDetailsData, {
+  return api.put(userUpdateUrl, updateDetailsData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -64,5 +64,5 @@ export const updateUser = (updateDetailsData) => {
 export const getAllUserDetails = () => {
   const getAllUserDetailsURL =
     apiUrl + `/allUsers/${localStorage.getItem("profileId")}`;
-  return axios.get(getAllUserDetailsURL);
+  return api.get(getAllUserDetailsURL);
 };
